@@ -16,8 +16,22 @@ class UsersView(APIView):
         return resp.resp_ok(users.data)
 
     def post(self, request, format=None):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return resp.resp_create(serializer.data)
-        return resp.resp_error(serializer.errors)
+        user = UserSerializer(data=request.data)
+        if user.is_valid():
+            user.save()
+            return resp.resp_create(user.data)
+        return resp.resp_error(user.errors)
+
+    def put(self, request, format=None):
+        try:
+            username = request.data['username']
+        except:
+            return resp.resp_error_none()
+
+        queryset = TimeTrackerUser.objects.get(username=username)
+        user = UserSerializer(queryset, data=request.data)
+        if user.is_valid():
+            user.save()
+            return resp.resp_ok(user.data)
+        else:
+            return resp.resp_error(user.errors)

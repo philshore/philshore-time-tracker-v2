@@ -22,9 +22,9 @@ class UserSerializer(serializers.ModelSerializer):
         '''
         Update the password
         '''
-        instance.password = validated_data.get(
+        instance.set_password(validated_data.get(
             'password', instance.password
-        )
+        ))
 
         instance.save()
         return instance
