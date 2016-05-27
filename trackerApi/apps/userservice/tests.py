@@ -21,8 +21,6 @@ class UserTest(APITestCase):
         }
         url = '/api/user/users/'
         response = self.client.post(url, data, format='json')
-        # for b in TimeTrackerUser.objects.all():
-        #     print(b.password)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(TimeTrackerUser.objects.count(), 1)
         self.assertEqual(

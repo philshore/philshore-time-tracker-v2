@@ -5,14 +5,18 @@ from models import TimeTrackerUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeTrackerUser
-        fields = ('username', 'first_name','password',
+        fields = ('username', 'first_name', 'password',
                   'last_name', 'project', 'component', 'is_admin')
 
     def create(self, validated_data):
         '''
         Create and return a new User with their corresponding parameters.
         '''
-        return TimeTrackerUser.objects.create(**validated_data)
+        password = validated_data.pop('password')
+        timetrackeruser = TimeTrackerUser.objects.create(**validated_data)
+        timetrackeruser.set_password(password)
+        timetrackeruser.save()
+        return timetrackeruser
 
     def update(self, instance, validated_data):
         '''
