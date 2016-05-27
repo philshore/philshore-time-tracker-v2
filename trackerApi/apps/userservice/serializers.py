@@ -5,7 +5,7 @@ from models import TimeTrackerUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeTrackerUser
-        fields = ('username', 'first_name',
+        fields = ('username', 'first_name','password',
                   'last_name', 'project', 'component', 'is_admin')
 
     def create(self, validated_data):
@@ -21,3 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.password = validated_data.get(
             'password', instance.password
         )
+
+        instance.save()
+        return instance
