@@ -7,7 +7,7 @@ import json
 class UserTest(APITestCase):
     def test_createuser_post(self):
         """
-        Ensure we can create a new scene object.
+        Ensure we can create a user object.
         """
         data = {
             "username": "testusername",
@@ -27,6 +27,9 @@ class UserTest(APITestCase):
             TimeTrackerUser.objects.get().username, 'testusername')
 
     def test_user_update(self):
+        """
+        Ensure we can update a user.
+        """
         setup_data(self)
         data = {
             "username": "testusername",
@@ -46,6 +49,9 @@ class UserTest(APITestCase):
         self.assertEqual(tracker_user.project, "testproject")
 
     def test_user_get(self):
+        """
+        Ensure we can retrieve a stored user.
+        """
         setup_data(self)
         url = '/api/user/users/'
         response = self.client.get(url, format='json')
@@ -54,6 +60,9 @@ class UserTest(APITestCase):
 
 
 def setup_data(self):
+    """
+    Create a test data and store it into a tmp.db
+    """
     data = {
         "username": "testusername",
         "first_name": "testfirstname",
@@ -67,5 +76,3 @@ def setup_data(self):
 
     url = '/api/user/users/'
     self.client.post(url, data, format='json')
-
-
