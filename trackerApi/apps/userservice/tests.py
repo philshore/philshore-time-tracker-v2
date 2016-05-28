@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 from models import TimeTrackerUser
-# Create your tests here.
+import json
 
 
 class UserTest(APITestCase):
@@ -44,6 +44,13 @@ class UserTest(APITestCase):
         self.assertTrue(tracker_user.check_password('testpassword333'))
 
         self.assertEqual(tracker_user.project, "testproject")
+
+    def test_user_get(self):
+        setup_data(self)
+        url = '/api/user/users/'
+        response = self.client.get(url, format='json')
+        response_json = json.loads(response.content)
+        self.assertEqual(response_json[0]["username"], "testusername")
 
 
 def setup_data(self):
