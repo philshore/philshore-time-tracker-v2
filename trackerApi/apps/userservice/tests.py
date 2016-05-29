@@ -19,7 +19,7 @@ class UserTest(APITestCase):
             "is_admin": True
 
         }
-        url = '/api/user/users/'
+        url = '/api/v1/userservice/user/'
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(TimeTrackerUser.objects.count(), 1)
@@ -41,7 +41,7 @@ class UserTest(APITestCase):
             "is_admin": True
 
         }
-        url = '/api/user/users/'
+        url = '/api/v1/userservice/user/'
         self.client.put(url, data, format='json')
         tracker_user = TimeTrackerUser.objects.get(username=data["username"])
         self.assertTrue(tracker_user.check_password('testpassword333'))
@@ -53,10 +53,19 @@ class UserTest(APITestCase):
         Ensure we can retrieve a stored user.
         """
         setup_data(self)
-        url = '/api/user/users/'
+        url = '/api/v1/userservice/user/?username=testusername'
         response = self.client.get(url, format='json')
         response_json = json.loads(response.content)
-        self.assertEqual(response_json[0]["username"], "testusername")
+        self.assertEqual(response_json["first_name"], "testfirstname")
+
+    def test_userlist_none_get(self):
+        """
+        Ensure we can retrieve a list of users given a complete set of params.
+        """
+        setup_data(self)
+        url = '/api/v1/userservice/list/'
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.content, '')
 
 
 def setup_data(self):
@@ -74,5 +83,5 @@ def setup_data(self):
 
     }
 
-    url = '/api/user/users/'
+    url = '/api/v1/userservice/user/'
     self.client.post(url, data, format='json')

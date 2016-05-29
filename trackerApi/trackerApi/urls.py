@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/user/', include('apps.userservice.urls', namespace='tracker-api')),
+    url(r'^api/v1/userservice/', include('apps.userservice.urls', namespace='tracker-api')),
 ]
