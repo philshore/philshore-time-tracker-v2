@@ -45,7 +45,6 @@ class UserTest(APITestCase):
         self.client.put(url, data, format='json')
         tracker_user = TimeTrackerUser.objects.get(username=data["username"])
         self.assertTrue(tracker_user.check_password('testpassword333'))
-
         self.assertEqual(tracker_user.project, "testproject")
 
     def test_user_get(self):
@@ -65,6 +64,7 @@ class UserTest(APITestCase):
         setup_data(self)
         url = '/api/v1/userservice/list/'
         response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, '')
 
 

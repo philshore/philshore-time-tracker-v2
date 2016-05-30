@@ -3,12 +3,10 @@ from serializers import UserSerializer
 from models import TimeTrackerUser
 import resp
 
-# Create your views here.
-
 
 class UsersView(APIView):
     '''
-    Retrieves a specific Time Tracker User
+    Creates, Retrieves and Updates a specific Time Tracker User
     '''
 
     def get(self, request, format=None):
