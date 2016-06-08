@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import TimeTrackerUser
+from .models import TimeTrackerUser
 
 
 class UserSerializer(serializers.ModelSerializer):

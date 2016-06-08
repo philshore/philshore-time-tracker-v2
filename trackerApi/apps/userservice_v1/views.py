@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
-from serializers import UserSerializer
-from models import TimeTrackerUser
-import resp
+from .serializers import UserSerializer
+from .models import TimeTrackerUser
+from . import resp
 
 
 class UsersView(APIView):

@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class UserserviceConfig(AppConfig):
-    name = 'userservice'
+    name = 'userservice_v1'

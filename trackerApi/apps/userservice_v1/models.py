@@ -49,7 +49,7 @@ class TimeTrackerUser(AbstractBaseUser):
 
         ordering = ['last_name']
 
-        def __unicode__(self):
+        def __str__(self):
             '''
             Returns the username of the timetracker user.
             '''

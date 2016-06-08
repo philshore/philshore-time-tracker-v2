@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
-from models import TimeTrackerUser
+from .models import TimeTrackerUser
 import json
 
 
@@ -54,7 +54,7 @@ class UserTest(APITestCase):
         setup_data(self)
         url = '/api/v1/userservice/user/?username=testusername'
         response = self.client.get(url, format='json')
-        response_json = json.loads(response.content)
+        response_json = json.loads(response.content.decode())
         self.assertEqual(response_json["first_name"], "testfirstname")
 
     def test_userlist_none_get(self):
@@ -65,7 +65,7 @@ class UserTest(APITestCase):
         url = '/api/v1/userservice/list/'
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, '')
+        self.assertEqual(response.content.decode(), '')
 
 
 def setup_data(self):

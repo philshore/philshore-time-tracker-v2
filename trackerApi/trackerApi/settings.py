@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.userservice',
+    'apps.userservice_v1',
 ]
 
-AUTH_USER_MODEL = 'userservice.TimeTrackerUser'
+AUTH_USER_MODEL = 'userservice_v1.TimeTrackerUser'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
