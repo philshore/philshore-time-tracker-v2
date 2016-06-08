@@ -3,6 +3,7 @@ This contains the PhilSHORE Time Tracker Platform which utilizes Django Rest Fra
 
 ## Time Tracker API
 Install the following libraries for the TimeTracker API:
+- Python 3.4
 - Django
 - Django Rest Framework
 
