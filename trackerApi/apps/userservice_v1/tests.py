@@ -41,8 +41,11 @@ class UserTest(APITestCase):
             "is_admin": True
 
         }
+        usertoken = getToken(self)
+        headers = 'Authorization: '+ usertoken
+        print(headers)
         url = '/api/v1/userservice/user/'
-        self.client.put(url, data, format='json')
+        self.client.put(url, data, headers=headers, format='json')
         tracker_user = TimeTrackerUser.objects.get(username=data["username"])
         self.assertTrue(tracker_user.check_password('testpassword333'))
         self.assertEqual(tracker_user.project, "testproject")
@@ -78,6 +81,26 @@ class UserTest(APITestCase):
         response_json = json.loads(response.content.decode())
         self.assertEqual(response_json[0]["first_name"], "testfirstname")
 
+    def test_login_post_success(self):
+        """
+        Returns a user authenticated token from the posted credentials.
+        """
+        setup_data(self)
+        url = '/api/v1/userservice/auth/?username=testusername&password=testpassword'
+        response = self.client.post(url, format='json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_post_failed(self):
+        """
+        Returns an invalid credentials json.
+        """
+        setup_data(self)
+        url = '/api/v1/userservice/auth/?username=testusern23&password=testpassword'
+        response = self.client.post(url, format='json')
+        self.assertEqual(response.status_code, 200)
+        response_json = json.loads(response.content.decode())
+        self.assertEqual(response_json, "Invalid credentials.")
+
 
 def setup_data(self):
     """
@@ -96,3 +119,9 @@ def setup_data(self):
 
     url = '/api/v1/userservice/user/'
     self.client.post(url, data, format='json')
+
+
+def getToken(self):
+    url = "/api/v1/userservice/auth/?username=testusername&password=testpassword"
+    response = self.client.post(url, format='json')
+    return "Token " + json.loads(response.content.decode())

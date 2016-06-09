@@ -1,4 +1,9 @@
 from rest_framework.views import APIView
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+# from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
 from .serializers import UserSerializer
 from .models import TimeTrackerUser
 from . import resp
@@ -60,3 +65,15 @@ class UserListView(APIView):
 
         except:
             return resp.resp_error_none()
+
+
+class AuthView(APIView):
+
+    def post(self, request, format=None):
+        username = request.query_params.get('username')
+        password = request.query_params.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            usertoken = Token.objects.create(user=user)
+            return Response(usertoken.key)
+        return Response("Invalid credentials.")
