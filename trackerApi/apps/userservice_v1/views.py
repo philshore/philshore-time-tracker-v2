@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
-# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
@@ -13,7 +14,9 @@ class UsersView(APIView):
     '''
     Creates, Retrieves and Updates a specific Time Tracker User
     '''
-
+    # Requires an Token Authentication
+    @authentication_classes((TokenAuthentication,))
+    @permission_classes((IsAuthenticated, ))
     def get(self, request, format=None):
         try:
             username = request.query_params.get('username', None)
@@ -32,6 +35,9 @@ class UsersView(APIView):
         return resp.resp_error(user.errors)
 
     # This will be the update profile endpoint
+    # This also requires a token authentication
+    @authentication_classes((TokenAuthentication,))
+    @permission_classes((IsAuthenticated, ))
     def put(self, request, format=None):
         try:
             username = request.data['username']
@@ -52,7 +58,8 @@ class UserListView(APIView):
     Retrieves all users with a specific project and component.
     This will be used when creating a dashboard for a project leader.
     '''
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminUser,)
 
     def get(self, request):
         try:

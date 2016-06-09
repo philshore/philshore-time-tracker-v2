@@ -20,6 +20,7 @@ class TimeTrackerUserManager(BaseUserManager):
         tracker_user.set_password(password)
         tracker_user.component = "admin"
         tracker_user.is_admin = True
+        tracker_user.is_staff = True
         tracker_user.save(using=self._db)
         return tracker_user
 
@@ -35,6 +36,7 @@ class TimeTrackerUser(AbstractBaseUser):
     project = models.CharField(max_length=250)
     component = models.CharField(max_length=250)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
 

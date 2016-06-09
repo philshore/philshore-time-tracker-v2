@@ -125,5 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Response Headers
+# Custom Response Headers
 RESP_HEADERS = {'Access-Control-Allow-Origin': '*'}
+
+# Rest Framework Settings

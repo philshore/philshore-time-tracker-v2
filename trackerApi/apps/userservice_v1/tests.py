@@ -31,6 +31,9 @@ class UserTest(APITestCase):
         Ensure we can update a user.
         """
         setup_data(self)
+        usertoken = getToken(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(usertoken))
         data = {
             "username": "testusername",
             "first_name": "testfirstname",
@@ -41,11 +44,8 @@ class UserTest(APITestCase):
             "is_admin": True
 
         }
-        usertoken = getToken(self)
-        headers = 'Authorization: '+ usertoken
-        print(headers)
         url = '/api/v1/userservice/user/'
-        self.client.put(url, data, headers=headers, format='json')
+        self.client.put(url, data, format='json')
         tracker_user = TimeTrackerUser.objects.get(username=data["username"])
         self.assertTrue(tracker_user.check_password('testpassword333'))
         self.assertEqual(tracker_user.project, "testproject")
@@ -55,6 +55,9 @@ class UserTest(APITestCase):
         Ensure we can retrieve a stored user.
         """
         setup_data(self)
+        usertoken = getToken(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(usertoken))
         url = '/api/v1/userservice/user/?username=testusername'
         response = self.client.get(url, format='json')
         response_json = json.loads(response.content.decode())
@@ -65,6 +68,9 @@ class UserTest(APITestCase):
         Ensure the there is no list of users if there are no given params.
         """
         setup_data(self)
+        usertoken = getToken(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(usertoken))
         url = '/api/v1/userservice/list/'
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, 200)
@@ -75,8 +81,11 @@ class UserTest(APITestCase):
         Ensure we can retrieve a list of users given a complete set of params.
         """
         setup_data(self)
+        usertoken = getToken(self)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(usertoken))
         url = '/api/v1/userservice/list/?project=testproject&component=testcomponent'
-        response = self.client.get(url, format='json')
+        response = self.client.get(url, format=json)
         self.assertEqual(response.status_code, 200)
         response_json = json.loads(response.content.decode())
         self.assertEqual(response_json[0]["first_name"], "testfirstname")
@@ -113,7 +122,8 @@ def setup_data(self):
         "project": "testproject",
         "component": "testcomponent",
         "password": "testpassword",
-        "is_admin": True
+        "is_admin": True,
+        "is_staff": True,
 
     }
 
@@ -124,4 +134,4 @@ def setup_data(self):
 def getToken(self):
     url = "/api/v1/userservice/auth/?username=testusername&password=testpassword"
     response = self.client.post(url, format='json')
-    return "Token " + json.loads(response.content.decode())
+    return json.loads(response.content.decode())

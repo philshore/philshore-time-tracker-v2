@@ -6,7 +6,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeTrackerUser
         fields = ('username', 'first_name', 'password',
-                  'last_name', 'project', 'component')
+                  'last_name', 'project', 'component',
+                  'is_staff', 'is_admin')
 
     def create(self, validated_data):
         '''
