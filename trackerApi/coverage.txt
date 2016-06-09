@@ -13,6 +13,6 @@ apps/userservice_v1/resp.py                                          12      2  
 apps/userservice_v1/serializers.py                                   16      0   100%
 apps/userservice_v1/tests.py                                         70      0   100%
 apps/userservice_v1/urls.py                                           3      0   100%
-apps/userservice_v1/views.py                                         60      8    87%
+apps/userservice_v1/views.py                                         61      8    87%
 -------------------------------------------------------------------------------------
-TOTAL                                                               219     23    89%
+TOTAL                                                               220     23    90%

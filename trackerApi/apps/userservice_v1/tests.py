@@ -6,7 +6,6 @@ import json
 
 class UserTest(APITestCase):
     def test_models_create_user(self):
-
         user = TimeTrackerUser.objects.create_superuser("testusername", "testpassword","philshore")
         self.assertEqual(user.username, "testusername")
 
@@ -132,7 +131,6 @@ def setup_data(self):
     }
     url = '/api/v1/userservice/user/'
     self.client.post(url, data, format='json')
-
 
 def getToken(self):
     url = "/api/v1/userservice/auth/?username=testusername&password=testpassword"
