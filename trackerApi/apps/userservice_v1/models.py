@@ -5,8 +5,8 @@ from django.db import models
 
 class TimeTrackerUserManager(BaseUserManager):
 
-    def create_user(self, project, username, password=None):
-        timetracker_user = self.model(project=project, username=username)
+    def create_user(self, project, username, password):
+        timetracker_user = self.model(username=username, project=project)
         timetracker_user.set_password(password)
         timetracker_user.save(using=self._db)
         return timetracker_user
