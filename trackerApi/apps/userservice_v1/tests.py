@@ -26,7 +26,7 @@ class UserTest(APITestCase):
         self.assertEqual(
             TimeTrackerUser.objects.get().username, 'testusername')
 
-    def test_user_update(self):
+    def test_user_put(self):
         """
         Ensure we can update a user.
         """
@@ -59,13 +59,24 @@ class UserTest(APITestCase):
 
     def test_userlist_none_get(self):
         """
-        Ensure we can retrieve a list of users given a complete set of params.
+        Ensure the there is no list of users if there are no given params.
         """
         setup_data(self)
         url = '/api/v1/userservice/list/'
         response = self.client.get(url, format='json')
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content.decode(), '')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content.decode(), '[]')
+
+    def test_userlist_get(self):
+        """
+        Ensure we can retrieve a list of users given a complete set of params.
+        """
+        setup_data(self)
+        url = '/api/v1/userservice/list/?project=testproject&component=testcomponent'
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, 200)
+        response_json = json.loads(response.content.decode())
+        self.assertEqual(response_json[0]["first_name"], "testfirstname")
 
 
 def setup_data(self):

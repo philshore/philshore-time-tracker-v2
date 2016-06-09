@@ -18,6 +18,7 @@ class UsersView(APIView):
         except:
             return resp.resp_error_none()
 
+    # This will be the registration endpoint
     def post(self, request, format=None):
         user = UserSerializer(data=request.data)
         if user.is_valid():
@@ -25,6 +26,7 @@ class UsersView(APIView):
             return resp.resp_create(user.data)
         return resp.resp_error(user.errors)
 
+    # This will be the update profile endpoint
     def put(self, request, format=None):
         try:
             username = request.data['username']
@@ -43,13 +45,17 @@ class UsersView(APIView):
 class UserListView(APIView):
     '''
     Retrieves all users with a specific project and component.
+    This will be used when creating a dashboard for a project leader.
     '''
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    def get(self, request, project=None, component=None):
+    def get(self, request):
         try:
+            component = request.query_params.get('component', None)
+            project = request.query_params.get('project', None)
             userlist = TimeTrackerUser.objects.filter(
                 project=project).filter(component=component)
-            users = UserSerializer(userlist)
+            users = UserSerializer(userlist, many=True)
             return resp.resp_ok(users.data)
 
         except:
