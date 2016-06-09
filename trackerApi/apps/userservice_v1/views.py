@@ -1,6 +1,4 @@
 from rest_framework.views import APIView
-from rest_framework.decorators import permission_classes
-from rest_framework.decorators import authentication_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
@@ -15,33 +13,24 @@ class UsersView(APIView):
     '''
     Creates, Retrieves and Updates a specific Time Tracker User
     '''
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     # Requires an Token Authentication
-    @authentication_classes((TokenAuthentication,))
-    @permission_classes((IsAuthenticated, ))
     def get(self, request, format=None):
         try:
-            username = request.query_params.get('username', None)
+            username = request.user.username
             users = UserSerializer(TimeTrackerUser.objects.get(
                 username=username))
             return resp.resp_ok(users.data)
         except:
             return resp.resp_error_none()
 
-    # This will be the registration endpoint
-    def post(self, request, format=None):
-        user = UserSerializer(data=request.data)
-        if user.is_valid():
-            user.save()
-            return resp.resp_create(user.data)
-        return resp.resp_error(user.errors)
-
     # This will be the update profile endpoint
     # This also requires a token authentication
-    @authentication_classes((TokenAuthentication,))
-    @permission_classes((IsAuthenticated, ))
     def put(self, request, format=None):
         try:
-            username = request.data['username']
+            username = request.user.username
         except:
             return resp.resp_error_none()
 
@@ -52,6 +41,16 @@ class UsersView(APIView):
             return resp.resp_ok(user.data)
         else:
             return resp.resp_error(user.errors)
+
+
+class CreateUserView(APIView):
+    # This will be the registration endpoint
+    def post(self, request, format=None):
+        user = UserSerializer(data=request.data)
+        if user.is_valid():
+            user.save()
+            return resp.resp_create(user.data)
+        return resp.resp_error(user.errors)
 
 
 class UserListView(APIView):
