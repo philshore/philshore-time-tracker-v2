@@ -63,10 +63,9 @@ class UserListView(APIView):
 
     def get(self, request):
         try:
-            component = request.query_params.get('component', None)
-            project = request.query_params.get('project', None)
+            project = request.user.project
             userlist = TimeTrackerUser.objects.filter(
-                project=project).filter(component=component)
+                project=project)
             users = UserSerializer(userlist, many=True)
             return resp.resp_ok(users.data)
 
@@ -81,6 +80,10 @@ class AuthView(APIView):
         password = request.query_params.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
-            usertoken = Token.objects.create(user=user)
-            return Response(usertoken.key)
+            try:
+                usertoken = Token.objects.create(user=user)
+                return Response(usertoken.key)
+            except:
+                usertoken = Token.objects.get(user_id=user.id)
+                return Response(usertoken.key)
         return Response("Invalid credentials.")
