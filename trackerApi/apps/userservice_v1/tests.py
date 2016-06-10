@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from .models import TimeTrackerUser
 import json
 
@@ -22,8 +21,6 @@ class UserTest(APITestCase):
         }
         url = '/api/v1/userservice/create/'
         self.client.post(url, data, format='json')
-        # url = "/api/v1/userservice/auth/?username=testusername&password=testpassword"
-        # self.client.post(url, format='json')
 
     def test_models_create_user(self):
         user = TimeTrackerUser.objects.create_superuser(
