@@ -44,7 +44,9 @@ class UsersView(APIView):
 
 
 class CreateUserView(APIView):
-    # This will be the registration endpoint
+    '''
+    Creates a user for the DTR tracker.
+    '''
     def post(self, request, format=None):
         user = UserSerializer(data=request.data)
         if user.is_valid():
@@ -74,7 +76,10 @@ class UserListView(APIView):
 
 
 class AuthView(APIView):
-
+    '''
+    Creates a token for the api. If the user already has a token return
+    the user token.
+    '''
     def post(self, request, format=None):
         username = request.query_params.get('username')
         password = request.query_params.get('password')
