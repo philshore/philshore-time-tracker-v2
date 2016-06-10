@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.userservice',
+    'rest_framework.authtoken',
+    'apps.userservice_v1',
 ]
 
-AUTH_USER_MODEL = 'userservice.TimeTrackerUser'
+AUTH_USER_MODEL = 'userservice_v1.TimeTrackerUser'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,5 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Response Headers
+# Custom Response Headers
 RESP_HEADERS = {'Access-Control-Allow-Origin': '*'}
+
+# Rest Framework Settings

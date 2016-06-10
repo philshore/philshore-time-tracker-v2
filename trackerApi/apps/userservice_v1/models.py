@@ -5,8 +5,8 @@ from django.db import models
 
 class TimeTrackerUserManager(BaseUserManager):
 
-    def create_user(self, project, username, password=None):
-        timetracker_user = self.model(project=project, username=username)
+    def create_user(self, project, username, password):
+        timetracker_user = self.model(username=username, project=project)
         timetracker_user.set_password(password)
         timetracker_user.save(using=self._db)
         return timetracker_user
@@ -20,6 +20,7 @@ class TimeTrackerUserManager(BaseUserManager):
         tracker_user.set_password(password)
         tracker_user.component = "admin"
         tracker_user.is_admin = True
+        tracker_user.is_staff = True
         tracker_user.save(using=self._db)
         return tracker_user
 
@@ -35,6 +36,7 @@ class TimeTrackerUser(AbstractBaseUser):
     project = models.CharField(max_length=250)
     component = models.CharField(max_length=250)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
 
@@ -49,7 +51,7 @@ class TimeTrackerUser(AbstractBaseUser):
 
         ordering = ['last_name']
 
-        def __unicode__(self):
+        def __str__(self):
             '''
             Returns the username of the timetracker user.
             '''

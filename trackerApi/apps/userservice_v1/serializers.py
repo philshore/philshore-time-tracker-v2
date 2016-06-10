@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from models import TimeTrackerUser
+from .models import TimeTrackerUser
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeTrackerUser
         fields = ('username', 'first_name', 'password',
-                  'last_name', 'project', 'component', 'is_admin')
+                  'last_name', 'project', 'component',
+                  'is_staff', 'is_admin')
 
     def create(self, validated_data):
         '''

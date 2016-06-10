@@ -1,0 +1,18 @@
+Name                                                              Stmts   Miss  Cover
+-------------------------------------------------------------------------------------
+apps/__init__.py                                                      0      0   100%
+apps/userservice_v1/__init__.py                                       0      0   100%
+apps/userservice_v1/admin.py                                          1      0   100%
+apps/userservice_v1/apps.py                                           4      4     0%
+apps/userservice_v1/migrations/0001_initial.py                        6      0   100%
+apps/userservice_v1/migrations/0002_timetrackeruser_is_staff.py       5      0   100%
+apps/userservice_v1/migrations/__init__.py                            0      0   100%
+apps/userservice_v1/models.py                                        36      3    92%
+apps/userservice_v1/permissions.py                                    6      6     0%
+apps/userservice_v1/resp.py                                          12      2    83%
+apps/userservice_v1/serializers.py                                   16      0   100%
+apps/userservice_v1/tests.py                                         57      0   100%
+apps/userservice_v1/urls.py                                           3      0   100%
+apps/userservice_v1/views.py                                         58      8    86%
+-------------------------------------------------------------------------------------
+TOTAL                                                               204     23    89%
